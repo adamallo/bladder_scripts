@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --mem 10000
 
 usage="Usage: $0 tumor normal outname"
 
