@@ -32,3 +32,9 @@ for i in */*mdups.bam; do submit bladder_scripts/bamqc.sh $i;done
 ##Mutect2
 tail -n +2 files.csv | while read Patient Sample Code File Nfile; do folderF=$(echo $File | sed "s/.bam//");nameF=$(echo $folderF | sed "s/^.*\///");nameF="$folderF/${nameF}_mdups.bam";folderN=$(echo $Nfile | sed -e "s/.bam//");nameN=$(echo $folderN | sed "s/^.*\///");nameN="$folderN/${nameN}_mdups.bam";submit bladder_scripts/mutect2.sh $nameF $nameN $Code;done
 
+##Seqz Generation ##Working here
+
+for i in */*mdups.bam; do submit bladder_scripts/generatepileups.sh $i;done
+
+tail -n +2 files.csv | while read Patient Sample Code File Nfile; do folderF=$(echo $File | sed "s/.bam//");nameF=$(echo $folderF | sed "s/^.*\///");nameF="$folderF/${nameF}_mdups.bam";folderN=$(echo $Nfile | sed -e "s/.bam//");nameN=$(echo $folderN | sed "s/^.*\///");nameN="$folderN/${nameN}_mdups.bam";submit bladder_scripts/preprocess_sequenza.sh $nameF $nameN $Code;done
+

@@ -18,3 +18,8 @@ rm Cosmic_VCF_Header Coding.clean NonCoding.clean
 #Obtained from Broad's resource bundle
 gunzip dbsnp_138.b37.vcf.gz
 gunzip dbsnp_138.b37.vcf.idx.gz
+
+##Sequenza
+
+##Genome 50-bpwindow GC content
+sequenza-utils.py GC-windows -w 50 GRCh37-lite.fa | gzip > b37.gc50Base.txt.gz
