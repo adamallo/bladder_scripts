@@ -1,0 +1,23 @@
+
+ECNT;HCNT;MAX_ED;MIN_ED;NLOD;TLOD
+
+ECNT: Number of events in this haplotype
+HCNT: Number of haplotypes that support this variant
+MAX_ED: Maximum distance between events in this active region
+MIN_ED: Minimum distance between events in this active region
+NLOD: Normal LOD score
+TLOD: Tumor LOD score
+
+
+(Two columns, Tumor/Normal)
+GT:AD:AF:ALT_F1R2:ALT_F2R1:FOXOG:QSS:REF_F1R2:REF_F2R1
+
+GT: Genotype
+AD: Allelic depths for the ref and alt alleles in the order listed
+AF: Allele fraction of the event in the tumor
+ALT_F1R2: Count of reads in F1R2 pair orientation supporting the alternate allele
+ALT_F2R1: Count of reads in F2R1 pair orientation supporting the alternate allele
+FOXOG: Fraction of alt reads indicating OxoG error
+QSS: Sum of base quality scores for each allele
+REF_F1R2: Count of reads in F1R2 pair orientation supporting the reference allele
+REF_F2R1: Count of reads in F2R1 pair orientation supporting the reference allele
