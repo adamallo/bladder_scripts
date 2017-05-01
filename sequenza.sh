@@ -9,6 +9,5 @@ then
 	exit 1
 fi
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-Rscript $DIR/sequenza.R $1 $SLURM_CPUS_PER_TASK
+Rscript $BLADDER_SCRIPTS/sequenza.R $1 $SLURM_CPUS_PER_TASK
