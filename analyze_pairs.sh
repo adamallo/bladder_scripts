@@ -26,3 +26,43 @@ do
 	echo $Code,$Patient${A},$Patient${B},$privAFilt,$privBFilt,$commonFilt,$simFilt >> pairedSimilarityPASSFilt.csv
 	
 done
+
+echo Code,nameA,nameB,indA,indB,privA,privB,common,sim > allSimilarityPASSFilt.csv
+files=$(ls -l1 *[ZP]_filt2.vcf | awk 'BEGIN{FS=" "}{print $9}' | paste -s)
+files=( $files )
+nfiles=${#files[@]}
+finalj=$(( $nfiles - 1 ))
+n=1
+
+for i in ${files[*]}
+do
+    nameA=$(echo $i | sed "s/_filt2.vcf//g") 
+    indA=$(echo $nameA | sed "s/..$//g")
+    for j in `seq $n $finalj`
+    do
+        nameB=$(echo ${files[$j]} | sed "s/_filt2.vcf//g")
+        indB=$(echo $nameB | sed "s/..$//g")
+        Code=${nameA}${nameB}
+        bcftools isec ${nameA}_filt2.vcf.gz ${nameB}_filt2.vcf.gz -p ${Code}_filt2
+        privAFilt=$(sed -n '/^#.*/!p' ${Code}_filt2/0000.vcf | wc -l)
+        privBFilt=$(sed -n '/^#.*/!p' ${Code}_filt2/0001.vcf | wc -l)
+        commonFilt=$(sed -n '/^#.*/!p' ${Code}_filt2/0002.vcf | wc -l)
+        simFilt=$(perl -e "print($commonFilt/($privAFilt+$privBFilt+$commonFilt))")
+        echo $Code,$nameA,$nameB,$indA,$indB,$privAFilt,$privBFilt,$commonFilt,$simFilt >> allSimilarityPASSFilt.csv
+    done
+    n=$(( $n + 1 ))
+    
+done
+
+files=$(ls -l1 GH*[ZP]_filt2.vcf | awk 'BEGIN{FS=" "}{print $9}' | paste -s)
+files=( $files )
+nfiles=${#files[@]}
+bcftools isec --nfiles =$nfiles GH*[ZP]_filt2.vcf.gz -p GH_filt2
+files=$(ls -l1 LH*[ZP]_filt2.vcf | awk 'BEGIN{FS=" "}{print $9}' | paste -s)
+files=( $files )
+nfiles=${#files[@]}
+bcftools isec --nfiles =$nfiles LH*[ZP]_filt2.vcf.gz -p LH_filt2
+bcftools isec --nfiles =6 LH1P_filt2.vcf.gz LH2P_filt2.vcf.gz LH3P_filt2.vcf.gz LH4P_filt2.vcf.gz LH6Z_filt2.vcf.gz LH7Z_filt2.vcf.gz -p LH_nobenign
+bcftools isec --nfiles =4 LH2P_filt2.vcf.gz LH3P_filt2.vcf.gz LH4P_filt2.vcf.gz LH7Z_filt2.vcf.gz -p LH_malignant
+bcftools isec --nfiles =3 LH2P_filt2.vcf.gz LH3P_filt2.vcf.gz LH4P_filt2.vcf.gz -p LH_malignantNF
+bcftools isec --nfiles =4 LH3P_filt2.vcf.gz LH7Z_filt2.vcf.gz LH6Z_filt2.vcf.gz LH2P_filt2.vcf.gz -p LH_cluster
