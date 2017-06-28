@@ -66,3 +66,9 @@ bcftools isec --nfiles =6 LH1P_filt2.vcf.gz LH2P_filt2.vcf.gz LH3P_filt2.vcf.gz 
 bcftools isec --nfiles =4 LH2P_filt2.vcf.gz LH3P_filt2.vcf.gz LH4P_filt2.vcf.gz LH7Z_filt2.vcf.gz -p LH_malignant
 bcftools isec --nfiles =3 LH2P_filt2.vcf.gz LH3P_filt2.vcf.gz LH4P_filt2.vcf.gz -p LH_malignantNF
 bcftools isec --nfiles =4 LH3P_filt2.vcf.gz LH7Z_filt2.vcf.gz LH6Z_filt2.vcf.gz LH2P_filt2.vcf.gz -p LH_cluster
+bcftools isec --nfiles =4 LH1P_filt2.vcf.gz LH6Z_filt2.vcf.gz LH5P_filt2.vcf.gz LH8Z_filt2.vcf.gz -p LH_nonmalignant
+
+module load annovar/2014-07-14
+##Like this for everyone
+convert2annovar.pl --format vcf4 LH_nonmalignant/0000.vcf > LH_nonmalignant/0000.inputann
+annotate_variation.pl --geneanno --buildver hg19 --outfile LH_nonmalignant/0000.annotated LH_nonmalignant/0000.inputann $HUMANDB_DIR
